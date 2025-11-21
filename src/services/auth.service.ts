@@ -1,6 +1,6 @@
 import { Console } from "console";
 import User from "../models/User";
-import {generateToken} from "../utils/generateJwt";
+import { generateToken } from "../utils/generateJwt";
 import axios from "axios";
 
 export const loginWithGoogle = async (idToken: string) => {
@@ -15,39 +15,39 @@ export const loginWithGoogle = async (idToken: string) => {
   const { sub, email, name, picture } = googleRes.data;
 
   // Find user or create new one
-  
- 
+
+
   try {
-  // 1) Try to find user by Google sub (unique google user id)
-  let user = await User.findOne({ googleId: sub });
-  console.log("Found User:", user);
-  if (!user) {
-    user = await User.create({
-      googleId: sub,
-      email,
-      name,
-      avatar: picture,
-    });
+    // 1) Try to find user by Google sub (unique google user id)
+    let user = await User.findOne({ googleId: sub });
+    if (!user) {
+      user = await User.create({
+        googleId: sub,
+        email,
+        name,
+        loginType: "google"
+      });
+    }
+
+    const token = generateToken(user._id);
+    console.log("Generated JWT Token:", token);
+    return { token, user };
+
+  } catch (error) {
+    console.error("❌ Error in Google Login Service:", error);
+    throw new Error("Failed to login with Google");
   }
-
-  const token = generateToken(user._id);
-  console.log("Generated JWT Token:", token);
-  return { token, user };
-
-} catch (error) {
-  console.error("❌ Error in Google Login Service:", error);
-  throw new Error("Failed to login with Google");
-}
 };
 
 export const loginWithOtp = async (phone: string) => {
   if (!phone) throw new Error("Phone number required");
 
   // Find or create user
-  let user = await User.findOne({ phone });
-
+  console.log("Phone Number for OTP Login:", phone);
+  let user = await User.findOne({ phoneNumber: phone });
+  console.log("Phone Number for OTP Login:", phone);
   if (!user) {
-    user = await User.create({ phone });
+    user = await User.create({ phoneNumber: phone, loginType: "phone" });
   }
 
   const token = generateToken(user._id);
