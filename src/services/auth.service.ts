@@ -29,7 +29,7 @@ export const loginWithGoogle = async (idToken: string) => {
       });
     }
 
-    const token = generateToken(user._id);
+    const token = generateToken(user);
     console.log("Generated JWT Token:", token);
     return { token, user };
 
@@ -50,7 +50,7 @@ export const loginWithOtp = async (phone: string) => {
     user = await User.create({ phoneNumber: phone, loginType: "phone" });
   }
 
-  const token = generateToken(user._id);
+  const token = generateToken(user);
 
   return { token, user };
 };

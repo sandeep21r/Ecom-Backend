@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import { Types } from "mongoose";
+import { IUser } from "../models/User";
 
-export const generateToken = (userId: string | Types.ObjectId) => {
+export const generateToken = (user: IUser) => {
   return jwt.sign(
-    { userId: userId.toString() },  // convert ObjectId → string
+    { userId: user._id, role: user.role },
     process.env.JWT_SECRET!,
     { expiresIn: "1d" }
   );
