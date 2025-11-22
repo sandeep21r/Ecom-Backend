@@ -9,4 +9,6 @@ router.post("/google", googleLogin);
 // OTP login
 router.post("/otp", otpLogin);
 
+
+
 export default router;

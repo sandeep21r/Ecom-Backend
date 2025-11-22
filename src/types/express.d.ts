@@ -4,6 +4,7 @@ declare namespace Express {
       _id: string;
       phone?: string;
       googleId?: string;
+      role?: string;
     };
   }
 }

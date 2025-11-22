@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import {connectDB} from "./config/db";
 import authRoutes from "./routes/auth.routes";
+import adminRoutes from "./routes/admin.routes";
 
 dotenv.config({ path: "./local.env" });
 
@@ -17,6 +18,7 @@ connectDB();
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 5000;
